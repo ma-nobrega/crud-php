@@ -1,17 +1,12 @@
 <?php
 
-require 'config.php';
+require __DIR__ . '/../config.php';
 
 $erro = '';
 $nome = '';
 $quantidade = '';
 $preco = '';
 
-/*
- * CADASTRO:
- * O formulário envia os dados com POST.
- * Depois de validar os valores, INSERT cria uma nova linha na tabela.
- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome'] ?? '');
     $quantidade = (int) ($_POST['quantidade'] ?? 0);
@@ -24,14 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($preco < 0) {
         $erro = 'O preço não pode ser negativo.';
     } else {
-        // Escapamos o texto para ele poder ser usado com segurança no SQL.
         $nomeSeguro = $database->real_escape_string($nome);
 
         $sql = "INSERT INTO produtos (nome, quantidade, preco)
                 VALUES ('$nomeSeguro', $quantidade, $preco)";
         $database->query($sql);
 
-        // Depois de salvar, voltamos para a listagem.
         header('Location: index.php?mensagem=Produto cadastrado com sucesso.');
         exit;
     }

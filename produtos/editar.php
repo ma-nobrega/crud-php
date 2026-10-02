@@ -1,14 +1,9 @@
 <?php
 
-require 'config.php';
+require __DIR__ . '/../config.php';
 
 $id = (int) ($_GET['id'] ?? 0);
 
-/*
- * EDIÇÃO - PRIMEIRA ETAPA:
- * Recebemos o id pela URL e buscamos o produto para preencher o formulário.
- * O cast para int impede que o id seja tratado como texto no SQL.
- */
 $resultado = $database->query("SELECT * FROM produtos WHERE id = $id");
 $produto = $resultado->fetch_assoc();
 
@@ -21,10 +16,6 @@ $nome = $produto['nome'];
 $quantidade = $produto['quantidade'];
 $preco = $produto['preco'];
 
-/*
- * EDIÇÃO - SEGUNDA ETAPA:
- * Quando o formulário é enviado, UPDATE altera a linha encontrada pelo id.
- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome'] ?? '');
     $quantidade = (int) ($_POST['quantidade'] ?? 0);
